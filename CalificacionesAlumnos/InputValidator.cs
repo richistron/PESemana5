@@ -4,33 +4,29 @@ public static class InputValidator
 {
     public static string String(string msg)
     {
-        string? input;
-        var valid = false;
-        do
-        {
-            Console.WriteLine(msg);
-            input = Console.ReadLine();
-            if (string.IsNullOrEmpty(input))
-                Console.WriteLine("Invalid string");
-            else valid = true;
-        } while (!valid);
-
-        return input;
-    }
-
-    public static int Int(string msg)
-    {
-        var valid = false;
-        int n;
+        ValidString validated;
         do
         {
             Console.WriteLine(msg);
             var input = Console.ReadLine();
-            if (int.TryParse(input, out n))
-                valid = true;
-            else Console.WriteLine($"\"{input}\" is not an integer");
-        } while (!valid);
+            validated = new ValidString(input);
+            if (!validated.Valid) Console.WriteLine("Invalid string");
+        } while (!validated.Valid);
 
-        return n;
+        return validated.Value;
+    }
+
+    public static int Int(string msg)
+    {
+        ValidNumber validated;
+        do
+        {
+            Console.WriteLine(msg);
+            var input = Console.ReadLine();
+            validated = new ValidNumber(input);
+            if (!validated.Valid) Console.WriteLine($"\"{input}\" is not an integer");
+        } while (!validated.Valid);
+
+        return validated.Value;
     }
 }
