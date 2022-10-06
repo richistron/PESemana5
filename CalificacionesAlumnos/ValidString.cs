@@ -1,16 +1,19 @@
 ﻿namespace CalificacionesAlumnos;
 
-public struct ValidString
+public class ValidString : IValidatedData<string>
 {
-    public bool Valid = false;
-    public string Value = "";
+    private readonly bool _valid = false;
+    private readonly string _value = "";
 
     public ValidString(string? input)
     {
         if (!string.IsNullOrEmpty(input))
         {
-            Value = input;
-            Valid = true;
+            _value = input;
+            _valid = true;
         }
     }
+
+    public string GetValue() => _value;
+    public bool IsValid() => _valid;
 }

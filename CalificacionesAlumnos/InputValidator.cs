@@ -10,10 +10,10 @@ public static class InputValidator
             Console.WriteLine(msg);
             var input = Console.ReadLine();
             validated = new ValidString(input);
-            if (!validated.Valid) Console.WriteLine("Invalid string");
-        } while (!validated.Valid);
+            if (!validated.IsValid()) Console.WriteLine("Invalid string");
+        } while (!validated.IsValid());
 
-        return validated.Value;
+        return validated.GetValue();
     }
 
     public static int Int(string msg)
@@ -24,9 +24,9 @@ public static class InputValidator
             Console.WriteLine(msg);
             var input = Console.ReadLine();
             validated = new ValidNumber(input);
-            if (!validated.Valid) Console.WriteLine($"\"{input}\" is not an integer");
-        } while (!validated.Valid);
+            if (!validated.IsValid()) Console.WriteLine($"\"{input}\" is not an integer");
+        } while (!validated.IsValid());
 
-        return validated.Value;
+        return validated.GetValue();
     }
 }

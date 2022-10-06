@@ -1,12 +1,15 @@
 ﻿namespace CalificacionesAlumnos;
 
-public struct ValidNumber
+public class ValidNumber : IValidatedData<int>
 {
-    public bool Valid;
-    public int Value = 0;
+    private readonly bool _valid;
+    private readonly int _value = 0;
 
     public ValidNumber(string? input)
     {
-        Valid = int.TryParse(input, out Value);
+        _valid = int.TryParse(input, out _value);
     }
+
+    public int GetValue() => _value;
+    public bool IsValid() => _valid;
 }
