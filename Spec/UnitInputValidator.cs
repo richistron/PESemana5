@@ -102,4 +102,42 @@ public class UnitInputValidator
             Assert.That(result, Is.EqualTo(int.Parse(input)));
         });
     }
+     [Test]
+    public void FloatTest()
+    {
+        var msg = "Please type a number";
+        var input = "1.1";
+
+        SetupUserResponses(input);
+        var validator = new InputValidator<float>(msg, new ValidFloat());
+        var result = validator.Validate();
+        var lines = GetConsoleOutput();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result, Is.EqualTo(float.Parse(input)));
+            Assert.That(lines[0], Is.EqualTo(msg));
+        });
+    }
+
+    [Test]
+    public void FloatTest_Ask_MultipleTimes()
+    {
+        var msg = "Please type a number";
+        var input = "1.1";
+    
+        SetupUserResponses("", "adflkajdfkasdf", input);
+        var validator = new InputValidator<float>(msg, new ValidFloat());
+        var result = validator.Validate();
+        var lines = GetConsoleOutput();
+    
+        Assert.Multiple(() =>
+        {
+            Assert.That(lines[0], Is.EqualTo(msg));
+            Assert.That(lines[1], Is.EqualTo("Invalid value"));
+            Assert.That(lines[2], Is.EqualTo(msg));
+            Assert.That(lines[3], Is.EqualTo("Invalid value"));
+            Assert.That(result, Is.EqualTo(float.Parse(input)));
+        });
+    }
 }
