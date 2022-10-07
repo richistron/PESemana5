@@ -34,7 +34,8 @@ public class UnitInputValidator
         var msg = "Type the person name";
 
         SetupUserResponses(name);
-        var result = InputValidator.String(msg);
+        var validator = new InputValidator<string>(msg, new ValidString());
+        var result = validator.Validate();
         var lines = GetConsoleOutput();
 
         Assert.Multiple(() =>
@@ -51,14 +52,15 @@ public class UnitInputValidator
         var msg = "Type the person name";
 
         SetupUserResponses("", name);
-        var result = InputValidator.String(msg);
+        var validator = new InputValidator<string>(msg, new ValidString());
+        var result = validator.Validate();
         var lines = GetConsoleOutput();
 
         Assert.Multiple(() =>
         {
             Assert.That(result, Is.EqualTo(name));
             Assert.That(lines[0], Is.EqualTo(msg));
-            Assert.That(lines[1], Is.EqualTo("Invalid string"));
+            Assert.That(lines[1], Is.EqualTo("Invalid value"));
         });
     }
 
@@ -69,7 +71,8 @@ public class UnitInputValidator
         var input = "1";
 
         SetupUserResponses(input);
-        var result = InputValidator.Int(msg);
+        var validator = new InputValidator<int>(msg, new ValidNumber());
+        var result = validator.Validate();
         var lines = GetConsoleOutput();
 
         Assert.Multiple(() =>
@@ -86,16 +89,17 @@ public class UnitInputValidator
         var input = "1";
 
         SetupUserResponses("", "adflkajdfkasdf", input);
-        var num = InputValidator.Int(msg);
+        var validator = new InputValidator<int>(msg, new ValidNumber());
+        var result = validator.Validate();
         var lines = GetConsoleOutput();
 
         Assert.Multiple(() =>
         {
             Assert.That(lines[0], Is.EqualTo(msg));
-            Assert.That(lines[1], Is.EqualTo("\"\" is not an integer"));
+            Assert.That(lines[1], Is.EqualTo("Invalid value"));
             Assert.That(lines[2], Is.EqualTo(msg));
-            Assert.That(lines[3], Is.EqualTo("\"adflkajdfkasdf\" is not an integer"));
-            Assert.That(num, Is.EqualTo(int.Parse(input)));
+            Assert.That(lines[3], Is.EqualTo("Invalid value"));
+            Assert.That(result, Is.EqualTo(int.Parse(input)));
         });
     }
 }

@@ -1,32 +1,36 @@
 ﻿namespace CalificacionesAlumnos;
 
-public static class InputValidator
+public class InputValidator<T>
 {
-    public static string String(string msg)
-    {
-        ValidString validated;
-        do
-        {
-            Console.WriteLine(msg);
-            var input = Console.ReadLine();
-            validated = new ValidString(input);
-            if (!validated.IsValid()) Console.WriteLine("Invalid string");
-        } while (!validated.IsValid());
+    private readonly IValidatedData<T> _validator;
+    private readonly string _msg = "Please add a value";
+    private readonly string _error = "Invalid value";
 
-        return validated.GetValue();
+    public InputValidator(IValidatedData<T> validator) => _validator = validator;
+
+    public InputValidator(string msg, IValidatedData<T> validator)
+    {
+        _msg = msg;
+        _validator = validator;
     }
 
-    public static int Int(string msg)
+    public InputValidator(string msg, string error, IValidatedData<T> validator)
     {
-        ValidNumber validated;
+        _msg = msg;
+        _error = error;
+        _validator = validator;
+    }
+
+    public T Validate()
+    {
         do
         {
-            Console.WriteLine(msg);
+            Console.WriteLine(_msg);
             var input = Console.ReadLine();
-            validated = new ValidNumber(input);
-            if (!validated.IsValid()) Console.WriteLine($"\"{input}\" is not an integer");
-        } while (!validated.IsValid());
+            _validator.SetValue(input);
+            if (!_validator.IsValid()) Console.WriteLine(_error);
+        } while (!_validator.IsValid());
 
-        return validated.GetValue();
+        return _validator.GetValue();
     }
 }

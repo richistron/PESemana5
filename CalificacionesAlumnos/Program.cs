@@ -3,4 +3,4 @@
 using CalificacionesAlumnos;
 
 Console.WriteLine("hola mundo");
-InputValidator.String("Cual es tu nombre?");
+// InputValidator.String("Cual es tu nombre?");

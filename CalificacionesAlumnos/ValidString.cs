@@ -2,10 +2,10 @@
 
 public class ValidString : IValidatedData<string>
 {
-    private readonly bool _valid = false;
-    private readonly string _value = "";
+    private bool _valid = false;
+    private string _value = "";
 
-    public ValidString(string? input)
+    public void SetValue(string? input)
     {
         if (!string.IsNullOrEmpty(input))
         {
