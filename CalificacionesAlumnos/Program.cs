@@ -2,26 +2,33 @@
 
 using CalificacionesAlumnos;
 
-var inputValidator = new InputValidator<int>("Please add the number of students", new ValidNumber());
+InputValidator<int> inputValidator = new("Please add the number of students", new ValidNumber());
 var studentsNumber = inputValidator.Validate();
-var students = new List<Student>();
+List<Student> students = new();
+List<Student> highAchievers = new();
 float highest = 0;
 float total = 0;
 
 for (var i = 0; i < studentsNumber; i++)
 {
-    var nameValidator = new InputValidator<string>("Please type the student name", new ValidString());
+    InputValidator<string> nameValidator = new("Please type the student name", new ValidString());
     var name = nameValidator.Validate();
-    var gradeValidator = new InputValidator<float>("Please type the student grade", new ValidFloat());
+    InputValidator<float> gradeValidator = new("Please type the student grade",
+        "Invalid number, it must be a value between 0 and 10", new ValidFloat(0, 10));
     var grade = gradeValidator.Validate();
-    var student = new Student(name, grade);
+    Student student = new(name, grade);
     students.Add(student);
     total += student.Grade;
-    highest = student.Grade > highest ? student.Grade : highest;
+    if (student.Grade > highest)
+    {
+        highest = student.Grade;
+        highAchievers.Clear();
+        highAchievers.Add(student);
+    }
+    else if (student.Grade == highest)
+        highAchievers.Add(student);
 }
 
-Console.WriteLine($"The avarage was {(total / students.Count).ToString("n1")}");
+Console.WriteLine($"The average was {(total / students.Count).ToString("n1")}");
 Console.WriteLine("The highest achieving students are:");
-
-var highestStudents = students.FindAll(s => s.Grade == highest);
-highestStudents.ForEach(s => Console.WriteLine("\t * {0}", s.Name));
+highAchievers.ForEach(s => Console.WriteLine("\t * {0}", s.Name));
