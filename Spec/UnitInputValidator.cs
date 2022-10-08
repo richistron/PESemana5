@@ -102,7 +102,29 @@ public class UnitInputValidator
             Assert.That(result, Is.EqualTo(int.Parse(input)));
         });
     }
-     [Test]
+
+    [Test]
+    public void IntTest_MinMax()
+    {
+        var msg = "Please type a number";
+        var input = "1";
+
+        SetupUserResponses("-100", "6", input);
+        var validator = new InputValidator<int>(msg, new ValidNumber(-5, 5));
+        var result = validator.Validate();
+        var lines = GetConsoleOutput();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(lines[0], Is.EqualTo(msg));
+            Assert.That(lines[1], Is.EqualTo("Invalid value"));
+            Assert.That(lines[2], Is.EqualTo(msg));
+            Assert.That(lines[3], Is.EqualTo("Invalid value"));
+            Assert.That(result, Is.EqualTo(int.Parse(input)));
+        });
+    }
+
+    [Test]
     public void FloatTest()
     {
         var msg = "Please type a number";
@@ -125,12 +147,33 @@ public class UnitInputValidator
     {
         var msg = "Please type a number";
         var input = "1.1";
-    
+
         SetupUserResponses("", "adflkajdfkasdf", input);
         var validator = new InputValidator<float>(msg, new ValidFloat());
         var result = validator.Validate();
         var lines = GetConsoleOutput();
-    
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(lines[0], Is.EqualTo(msg));
+            Assert.That(lines[1], Is.EqualTo("Invalid value"));
+            Assert.That(lines[2], Is.EqualTo(msg));
+            Assert.That(lines[3], Is.EqualTo("Invalid value"));
+            Assert.That(result, Is.EqualTo(float.Parse(input)));
+        });
+    }
+
+    [Test]
+    public void FloatTest_MinMax()
+    {
+        var msg = "Please type a number";
+        var input = "1.1";
+
+        SetupUserResponses("-10", "100", input);
+        var validator = new InputValidator<float>(msg, new ValidFloat(0, 10));
+        var result = validator.Validate();
+        var lines = GetConsoleOutput();
+
         Assert.Multiple(() =>
         {
             Assert.That(lines[0], Is.EqualTo(msg));
